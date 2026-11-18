@@ -1,7 +1,6 @@
 <h1 align="center">Hi, I'm Emilio 👋</h1>
 <p align="center">
   <b>Computer Science student @ Fontys</b> · I build systems that run 24/7, learn from their own data and report to my phone.<br>
-  <i>Open to working student positions.</i>
 </p>
 
 <p align="center">
@@ -37,4 +36,4 @@ Most of my work lives in private repositories – here is what's behind the gree
 
 ---
 
-<p align="center"><i>Private by default – happy to walk through the code in an interview.</i></p>
+<p align="center"><i>Private by default – If you want to know more let me know :P</i></p>
