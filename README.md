@@ -19,7 +19,7 @@ Most of my work lives in private repositories – here is what's behind the gree
 | ⚡ | **Real-time market scanner** | TypeScript monorepo · React dashboard · Vitest – live data streams, scoring, real-time alerts, a Discord bot and paper trading. |
 | 🧪 | **Strategy research bot** | Python – 100 strategy variants compete in paper trading, cost-aware scoring 0–100, daily reports. |
 | 📱 | **iOS social app** | Swift · SwiftUI · Widgets + Node.js/LoopBack backend. |
-| 🎬 | **3D explainer video pipeline** *(in progress)* | TypeScript · React · Python – automated pipeline for short vertical explainer videos: programmatic 3D scenes rendered in React, local text-to-speech and speech recognition for word-synced captions, zero cloud costs. |
+| 🎬 | **3D explainer video pipeline** *(first reel shipped)* | TypeScript · React · Python – automated pipeline for short vertical explainer videos: programmatic 3D scenes rendered in React, local text-to-speech and speech recognition for word-synced captions, procedurally synthesized music & sound effects, automated QA. Zero cloud costs. |
 
 **How I work:** spec first, staged delivery, tests + benchmarks as a gate, automated deploys over SSH with auto-rollback, everything observable from Discord.
 
