@@ -146,7 +146,7 @@ def render_tokens_card(data: dict, force: str | None = None) -> str:
 
 
 def render_loc_card(data: dict, force: str | None = None) -> str:
-    """data must already be validated (validate_loc). Cumulative added vs. deleted."""
+    """data must already be validated (validate_loc). Cumulative lines added (deleted lines are intentionally not shown)."""
     tot = data["total"]
     weeks = []
     if data["weekly"]:  # continuous weekly axis (empty weeks keep the line flat)
@@ -156,15 +156,12 @@ def render_loc_card(data: dict, force: str | None = None) -> str:
             wk += timedelta(days=7)
     pre, weeks = weeks[:-26], weeks[-26:]  # graph window: last 26 weeks, totals stay all-time
     ca = sum(data["weekly"].get(w, [0, 0])[0] for w in pre)
-    cd = sum(data["weekly"].get(w, [0, 0])[1] for w in pre)
-    add_s, del_s = [], []
+    add_s = []
     for wk in weeks:
         ca += data["weekly"].get(wk, [0, 0])[0]
-        cd += data["weekly"].get(wk, [0, 0])[1]
         add_s.append(ca)
-        del_s.append(cd)
     if len(add_s) < 2:  # a line needs at least two points
-        add_s, del_s = [0] + (add_s or [0]), [0] + (del_s or [0])
+        add_s = [0] + (add_s or [0])
     top = max(add_s[-1], 1)  # window may start above 0 (pre-window total)
     x0, y0, w, h = 25, 128, 445, 48
     n = len(add_s)
@@ -174,12 +171,16 @@ def render_loc_card(data: dict, force: str | None = None) -> str:
         return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pts), pts[-1]
 
     l_add, (ax, ay) = path(add_s)
-    l_del, _ = path(del_s)
     area = f"{l_add} L{x0 + w},{y0 + h} L{x0},{y0 + h} Z"
-    net = tot["added"] - tot["deleted"]
-    sign = "+" if net >= 0 else "−"
+    rows = [("Repositories", str(data["repos"])), ("Commits", str(data["commits"])),
+            ("Since", data["since"][:7])]
+    rows_svg = "".join(
+        f'<text class="lbl" x="300" y="{66 + i * 17}">{k}</text>'
+        f'<text class="val" x="470" y="{66 + i * 17}" text-anchor="end">{v}</text>'
+        for i, (k, v) in enumerate(rows)
+    )
 
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Lines of code: {fmt(tot['added'])} added, {fmt(tot['deleted'])} deleted">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Lines of code: {fmt(tot['added'])} added">
 <title>Lines of code across my repositories</title>
 {_style(force)}
 <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
@@ -189,16 +190,12 @@ def render_loc_card(data: dict, force: str | None = None) -> str:
 <text class="title" x="25" y="33">Lines of Code · all repositories</text>
 <text class="big" x="25" y="82">+{fmt(tot['added'])}</text>
 <text class="lbl" x="25" y="102">lines added</text>
-<text class="big" x="200" y="82" style="fill:var(--accent)">−{fmt(tot['deleted'])}</text>
-<text class="lbl" x="200" y="102">lines deleted</text>
-<text class="val" x="470" y="62" text-anchor="end">{sign}{fmt(abs(net))}</text>
-<text class="tiny" x="470" y="78" text-anchor="end">net</text>
+{rows_svg}
 <line class="grid" x1="25" y1="{y0 + h}" x2="470" y2="{y0 + h}"/>
 <path class="area" d="{area}"/>
 <path class="spark" d="{l_add}"/>
-<path class="spark" d="{l_del}" style="stroke:var(--accent);animation-delay:.3s"/>
 <circle class="dot" cx="{ax:.1f}" cy="{ay:.1f}" r="3.5"/>
-<text class="tiny" x="25" y="196">cumulative, last 26 weeks · {data['repos']} repos · {data['commits']} commits</text>
+<text class="tiny" x="25" y="196">cumulative lines added · last 26 weeks · forks &amp; dependencies excluded</text>
 <text class="tiny" x="470" y="196" text-anchor="end">{data['updated']}</text>
 </svg>
 """
