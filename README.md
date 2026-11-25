@@ -1,8 +1,9 @@
-<h1 align="center">Hi, I'm Emilio 👋</h1>
+<p align="center">
+  <img src="assets/header.svg" width="100%" alt="Emilio – Computer Science student. Data Science, AI, Cyber Security." />
+</p>
 
 <p align="center">
-  <b>Computer Science student @ Fontys Venlo</b> · Data Science · AI · Cyber Security<br>
-  I build systems that run 24/7, learn from their own data and report to my phone.<br>
+  <a href="https://www.linkedin.com/in/emilio-melcher/">LinkedIn</a> · building bots, data pipelines and secure systems
 </p>
 
 <p align="center">
@@ -22,6 +23,10 @@ Source code stays private – each project has a public write-up with architectu
 | 🎬 | **[explainer-video-pipeline](https://github.com/Milo0209/explainer-video-pipeline)** | Automated pipeline for short vertical explainer videos: programmatic scenes rendered in React, local speech synthesis and recognition for word-synced captions, procedural music and SFX. Zero cloud costs. |
 
 **How I work:** spec first, staged delivery, tests + benchmarks as a gate, automated deploys over SSH with auto-rollback, everything observable from my phone.
+
+### 🔐 Security mindset
+
+Least-privilege tokens · CI actions pinned to commit hashes · no secrets in code · only aggregated numbers published – the stats below are produced by a pipeline built under exactly these rules.
 
 ---
 

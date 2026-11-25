@@ -279,3 +279,71 @@ def render_languages_card(data: dict, force: str | None = None) -> str:
 <text class="tiny" x="960" y="197" text-anchor="end">{data['updated']}</text>
 </svg>
 """
+
+
+HW, HH = 990, 230
+
+
+def render_header_card(force: str | None = None) -> str:
+    """Static profile banner (no data, no external resources). Animated via CSS only."""
+    chips = [("Data Science", 118, "#3b82f6"), ("AI", 52, "#a371f7"), ("Cyber Security", 128, "#2dd4bf")]
+    chip_svg, cx = [], 40
+    for i, (label, w, col) in enumerate(chips):
+        chip_svg.append(
+            f'<g class="leg" style="animation-delay:{0.9 + i * 0.12:.2f}s">'
+            f'<rect x="{cx}" y="172" width="{w}" height="28" rx="14" fill="{col}" fill-opacity=".14" stroke="{col}" stroke-opacity=".55"/>'
+            f'<circle cx="{cx + 14}" cy="186" r="3.5" fill="{col}"/>'
+            f'<text class="lbl" x="{cx + 24}" y="190" style="font-size:12px;font-weight:600">{label}</text></g>'
+        )
+        cx += w + 12
+    mono = "font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;"
+    lines = [
+        (0.4, '<tspan style="fill:var(--accent)">$</tspan> whoami'),
+        (0.9, "emilio — student, builder"),
+        (1.5, '<tspan style="fill:var(--accent)">$</tspan> ./now'),
+        (2.0, "bots · pipelines · security"),
+    ]
+    term = "".join(
+        f'<text class="leg" x="600" y="{96 + i * 24}" style="{mono}font-size:13px;fill:var(--text);animation-delay:{d}s">{t}</text>'
+        for i, (d, t) in enumerate(lines)
+    )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{HW}" height="{HH}" viewBox="0 0 {HW} {HH}" role="img" aria-label="Emilio – Computer Science student. Data Science, AI, Cyber Security.">
+<title>Emilio – Computer Science student</title>
+{_style(force)}
+<style>
+.blob {{ animation: drift 14s ease-in-out infinite alternate; }}
+.blob2 {{ animation: drift 18s ease-in-out infinite alternate-reverse; }}
+.cursor {{ animation: blink 1s steps(1) infinite; }}
+.name {{ fill: url(#tg); font-size: 54px; font-weight: 800; letter-spacing: -1px; }}
+.sub {{ font-size: 17px; fill: var(--text); }}
+.tag {{ font-size: 13px; fill: var(--muted); }}
+@keyframes drift {{ to {{ transform: translate(60px, 18px); }} }}
+@keyframes blink {{ 50% {{ opacity: 0; }} }}
+@media (prefers-reduced-motion: reduce) {{ .blob, .blob2, .cursor {{ animation: none; }} }}
+</style>
+<defs>
+<clipPath id="hc"><rect x="0" y="0" width="{HW}" height="{HH}" rx="12"/></clipPath>
+<linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--title)"/><stop offset="1" style="stop-color:var(--num)"/></linearGradient>
+<radialGradient id="b1"><stop offset="0" style="stop-color:var(--title)" stop-opacity=".30"/><stop offset="1" style="stop-color:var(--title)" stop-opacity="0"/></radialGradient>
+<radialGradient id="b2"><stop offset="0" style="stop-color:var(--accent)" stop-opacity=".26"/><stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/></radialGradient>
+<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" style="fill:var(--grid)"/></pattern>
+</defs>
+<g clip-path="url(#hc)">
+<rect width="{HW}" height="{HH}" class="card" style="stroke:none"/>
+<rect width="{HW}" height="{HH}" fill="url(#dots)"/>
+<circle class="blob" cx="170" cy="40" r="200" fill="url(#b1)"/>
+<circle class="blob2" cx="800" cy="210" r="220" fill="url(#b2)"/>
+</g>
+<rect class="card" x=".5" y=".5" width="{HW - 1}" height="{HH - 1}" rx="12" style="fill:none"/>
+<text class="tag" x="42" y="52">Hi, I'm</text>
+<text class="name leg" x="38" y="104" style="animation-delay:.1s">Emilio</text>
+<text class="sub leg" x="42" y="134" style="animation-delay:.4s">Computer Science student @ Fontys Venlo</text>
+<text class="tag leg" x="42" y="156" style="animation-delay:.6s">I build systems that run 24/7 and learn from their own data.</text>
+{"".join(chip_svg)}
+<rect x="570" y="38" width="380" height="154" rx="10" class="card" style="fill:var(--bg);fill-opacity:.7"/>
+<circle cx="590" cy="56" r="4.5" fill="#f85149"/><circle cx="606" cy="56" r="4.5" fill="#f0b429"/><circle cx="622" cy="56" r="4.5" fill="#56d364"/>
+<line class="grid" x1="570" y1="72" x2="950" y2="72"/>
+{term}
+<text class="cursor" x="600" y="192" style="{mono}font-size:13px;fill:var(--num)">▌</text>
+</svg>
+"""
