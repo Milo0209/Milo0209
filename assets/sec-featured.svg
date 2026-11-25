@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="990" height="72" viewBox="0 0 990 72" role="img" aria-label="Featured projects"><title>Featured projects</title><style>
+:root {
+  --bg:#f6f8fa; --border:#d0d7de; --title:#3b6fd4; --num:#0f8f7f; --text:#57606a;
+  --muted:#8c959f; --accent:#8250df; --line:#3b6fd4; --grid:#d8dee4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#1a1b27; --border:#2a2d42; --title:#70a5fd; --num:#38bdae; --text:#a9b1d6;
+    --muted:#6b7394; --accent:#bf91f3; --line:#70a5fd; --grid:#2a2d42;
+  }
+}
+
+text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+.card { fill: var(--bg); stroke: var(--border); stroke-width: 1; }
+.title { font-size: 15px; font-weight: 600; fill: var(--title); }
+.big { font-size: 36px; font-weight: 700; fill: var(--num); }
+.lbl { font-size: 12px; fill: var(--text); }
+.val { font-size: 12px; font-weight: 600; fill: var(--text); }
+.tiny { font-size: 10px; fill: var(--muted); }
+.spark { fill: none; stroke: var(--line); stroke-width: 2; stroke-linejoin: round;
+         stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000;
+         animation: draw 1.6s ease-out forwards; }
+.area { fill: url(#g); opacity: 0; animation: fade 1.2s ease-out .5s forwards; }
+.dot { fill: var(--accent); opacity: 0; animation: fade .4s ease-out 1.6s forwards; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+.grade { animation: grade 20s ease-in-out infinite; }
+.blob { animation: drift 14s ease-in-out infinite alternate; }
+.blob2 { animation: drift 18s ease-in-out infinite alternate-reverse; }
+@keyframes grade { 0%, 100% { filter: hue-rotate(-40deg); } 50% { filter: hue-rotate(45deg); } }
+@keyframes drift { to { transform: translate(60px, 18px); } }
+.seg { transform-box: fill-box; transform-origin: 0 50%;
+       animation: grow .9s cubic-bezier(.2,.8,.2,1) backwards; }
+.leg { animation: rise .6s ease-out backwards; }
+.shine { fill: url(#sh); transform-box: fill-box; animation: sweep 1.5s ease-in-out 1.5s backwards; }
+@keyframes sweep { from { transform: translateX(0); } to { transform: translateX(1100px); } }
+@keyframes grow { from { transform: scaleX(0); } }
+@keyframes rise { from { opacity: 0; transform: translateY(5px); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .spark { animation: none; stroke-dashoffset: 0; }
+  .area, .dot { animation: none; opacity: 1; }
+  .seg, .leg, .shine, .grade, .blob, .blob2 { animation: none; }
+}
+</style><style>
+.h2 { font-size: 26px; font-weight: 800; letter-spacing: -.5px; fill: url(#tg); }
+.sweep { animation: sweepx 4.5s ease-in-out infinite; }
+@keyframes sweepx { from { transform: translateX(-300px); } to { transform: translateX(1100px); } }
+.flow { stroke-dasharray: 3 9; animation: flow 1.4s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+.travel { animation: travel 7s ease-in-out infinite; }
+@keyframes travel { from { transform: translateX(0); } to { transform: translateX(790px); } }
+.ping { transform-box: fill-box; transform-origin: center; animation: ping 3.2s ease-out infinite backwards; }
+@keyframes ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(2.2); opacity: 0; } }
+.pulse { transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .sweep, .flow, .travel, .ping, .pulse { animation: none; } }
+</style>
+<defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--title)"/><stop offset="1" style="stop-color:var(--num)"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--num)" stop-opacity="0"/><stop offset=".5" style="stop-color:var(--num)" stop-opacity="1"/><stop offset="1" style="stop-color:var(--num)" stop-opacity="0"/></linearGradient></defs><rect class="card" x=".5" y=".5" width="989" height="71" rx="12" style="stroke:none"/><defs><clipPath id="hc"><rect width="990" height="72" rx="12"/></clipPath><radialGradient id="b1"><stop offset="0" style="stop-color:var(--title)" stop-opacity=".30"/><stop offset="1" style="stop-color:var(--title)" stop-opacity="0"/></radialGradient><radialGradient id="b2"><stop offset="0" style="stop-color:var(--accent)" stop-opacity=".26"/><stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/></radialGradient><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" style="fill:var(--grid)"/></pattern></defs><g clip-path="url(#hc)"><rect width="990" height="72" fill="url(#dots)"/><g class="grade"><circle class="blob" cx="168" cy="11" r="218" fill="url(#b1)"/><circle class="blob2" cx="812" cy="68" r="238" fill="url(#b2)"/></g></g><rect class="card" x=".5" y=".5" width="989" height="71" rx="12" style="fill:none"/><g class="grade"><rect class="leg" x="22" y="16" width="6" height="34" rx="3" style="fill:url(#tg);animation-delay:.1s"/></g><text class="h2 leg" x="42" y="38" style="animation-delay:.2s">Featured projects</text><text class="tiny leg" x="42" y="56" style="animation-delay:.4s">source stays private – each project has a public write-up</text><g clip-path="url(#sc)"><rect class="sweep" x="0" y="68" width="260" height="2" fill="url(#beam)"/></g><defs><clipPath id="sc"><rect x="0" y="66" width="990" height="4"/></clipPath></defs></svg>

@@ -25,6 +25,11 @@ text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
 .area { fill: url(#g); opacity: 0; animation: fade 1.2s ease-out .5s forwards; }
 .dot { fill: var(--accent); opacity: 0; animation: fade .4s ease-out 1.6s forwards; }
 .grid { stroke: var(--grid); stroke-width: 1; }
+.grade { animation: grade 20s ease-in-out infinite; }
+.blob { animation: drift 14s ease-in-out infinite alternate; }
+.blob2 { animation: drift 18s ease-in-out infinite alternate-reverse; }
+@keyframes grade { 0%, 100% { filter: hue-rotate(-40deg); } 50% { filter: hue-rotate(45deg); } }
+@keyframes drift { to { transform: translate(60px, 18px); } }
 .seg { transform-box: fill-box; transform-origin: 0 50%;
        animation: grow .9s cubic-bezier(.2,.8,.2,1) backwards; }
 .leg { animation: rise .6s ease-out backwards; }
@@ -37,10 +42,10 @@ text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
   .spark { animation: none; stroke-dashoffset: 0; }
   .area, .dot { animation: none; opacity: 1; }
-  .seg, .leg, .shine { animation: none; }
+  .seg, .leg, .shine, .grade, .blob, .blob2 { animation: none; }
 }
 </style>
-<rect class="card" x=".5" y=".5" width="989" height="204" rx="10"/>
+<rect class="card" x=".5" y=".5" width="989" height="204" rx="10" style="stroke:none"/><defs><clipPath id="hc"><rect width="990" height="205" rx="10"/></clipPath><radialGradient id="b1"><stop offset="0" style="stop-color:var(--title)" stop-opacity=".30"/><stop offset="1" style="stop-color:var(--title)" stop-opacity="0"/></radialGradient><radialGradient id="b2"><stop offset="0" style="stop-color:var(--accent)" stop-opacity=".26"/><stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/></radialGradient><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" style="fill:var(--grid)"/></pattern></defs><g clip-path="url(#hc)"><rect width="990" height="205" fill="url(#dots)"/><g class="grade"><circle class="blob" cx="168" cy="31" r="218" fill="url(#b1)"/><circle class="blob2" cx="812" cy="195" r="238" fill="url(#b2)"/></g></g><rect class="card" x=".5" y=".5" width="989" height="204" rx="10" style="fill:none"/>
 <text class="title" x="30" y="36">Languages · by lines written</text>
 <text class="tiny" x="960" y="36" text-anchor="end">7 languages · 74.7K lines</text>
 <text class="big" x="30" y="86" style="fill:#3b82f6">50%</text>

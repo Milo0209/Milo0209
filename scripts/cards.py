@@ -43,6 +43,11 @@ text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
 .area { fill: url(#g); opacity: 0; animation: fade 1.2s ease-out .5s forwards; }
 .dot { fill: var(--accent); opacity: 0; animation: fade .4s ease-out 1.6s forwards; }
 .grid { stroke: var(--grid); stroke-width: 1; }
+.grade { animation: grade 20s ease-in-out infinite; }
+.blob { animation: drift 14s ease-in-out infinite alternate; }
+.blob2 { animation: drift 18s ease-in-out infinite alternate-reverse; }
+@keyframes grade { 0%, 100% { filter: hue-rotate(-40deg); } 50% { filter: hue-rotate(45deg); } }
+@keyframes drift { to { transform: translate(60px, 18px); } }
 .seg { transform-box: fill-box; transform-origin: 0 50%;
        animation: grow .9s cubic-bezier(.2,.8,.2,1) backwards; }
 .leg { animation: rise .6s ease-out backwards; }
@@ -55,9 +60,27 @@ text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
   .spark { animation: none; stroke-dashoffset: 0; }
   .area, .dot { animation: none; opacity: 1; }
-  .seg, .leg, .shine { animation: none; }
+  .seg, .leg, .shine, .grade, .blob, .blob2 { animation: none; }
 }
 """
+
+
+def _frame(w: int, h: int, rx: int = 10) -> str:
+    """Shared card look: base, dot grid, drifting colour blobs with slow hue 'grading', border."""
+    return (
+        f'<rect class="card" x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="{rx}" style="stroke:none"/>'
+        f'<defs><clipPath id="hc"><rect width="{w}" height="{h}" rx="{rx}"/></clipPath>'
+        '<radialGradient id="b1"><stop offset="0" style="stop-color:var(--title)" stop-opacity=".30"/>'
+        '<stop offset="1" style="stop-color:var(--title)" stop-opacity="0"/></radialGradient>'
+        '<radialGradient id="b2"><stop offset="0" style="stop-color:var(--accent)" stop-opacity=".26"/>'
+        '<stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/></radialGradient>'
+        '<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">'
+        '<circle cx="2" cy="2" r="1" style="fill:var(--grid)"/></pattern></defs>'
+        f'<g clip-path="url(#hc)"><rect width="{w}" height="{h}" fill="url(#dots)"/>'
+        f'<g class="grade"><circle class="blob" cx="{w * 0.17:.0f}" cy="{h * 0.15:.0f}" r="{max(h, w * 0.22):.0f}" fill="url(#b1)"/>'
+        f'<circle class="blob2" cx="{w * 0.82:.0f}" cy="{h * 0.95:.0f}" r="{max(h, w * 0.24):.0f}" fill="url(#b2)"/></g></g>'
+        f'<rect class="card" x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="{rx}" style="fill:none"/>'
+    )
 
 
 def fmt(n: int) -> str:
@@ -137,7 +160,7 @@ def render_tokens_card(data: dict, force: str | None = None) -> str:
 <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="var(--line)" stop-opacity=".28"/><stop offset="1" stop-color="var(--line)" stop-opacity="0"/>
 </linearGradient></defs>
-<rect class="card" x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="10"/>
+{_frame(W, H)}
 <text class="title" x="25" y="33">Claude Code · Tokens</text>
 <text class="big" x="25" y="88">{fmt(grand)}</text>
 <text class="lbl" x="25" y="108">tokens processed in total</text>
@@ -194,7 +217,7 @@ def render_loc_card(data: dict, force: str | None = None) -> str:
 <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="var(--line)" stop-opacity=".28"/><stop offset="1" stop-color="var(--line)" stop-opacity="0"/>
 </linearGradient></defs>
-<rect class="card" x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="10"/>
+{_frame(W, H)}
 <text class="title" x="25" y="33">Lines of Code · all repositories</text>
 <text class="big" x="25" y="82">+{fmt(tot['added'])}</text>
 <text class="lbl" x="25" y="102">lines added</text>
@@ -264,7 +287,7 @@ def render_languages_card(data: dict, force: str | None = None) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{LW}" height="{LH}" viewBox="0 0 {LW} {LH}" role="img" aria-label="Most used language: {lead_k} with {pct(lead_p)} of lines written">
 <title>Programming languages by lines written</title>
 {_style(force)}
-<rect class="card" x=".5" y=".5" width="{LW - 1}" height="{LH - 1}" rx="10"/>
+{_frame(LW, LH)}
 <text class="title" x="30" y="36">Languages · by lines written</text>
 <text class="tiny" x="960" y="36" text-anchor="end">{n_lang} languages · {fmt(total if langs else 0)} lines</text>
 <text class="big" x="30" y="86" style="fill:{lead_col}">{pct(lead_p)}</text>
@@ -311,36 +334,21 @@ def render_header_card(force: str | None = None) -> str:
 <title>Emilio – Computer Science student</title>
 {_style(force)}
 <style>
-.blob {{ animation: drift 14s ease-in-out infinite alternate; }}
-.blob2 {{ animation: drift 18s ease-in-out infinite alternate-reverse; }}
 .cursor {{ animation: blink 1s steps(1) infinite; }}
 .name {{ fill: url(#tg); font-size: 54px; font-weight: 800; letter-spacing: -1px; }}
 .sub {{ font-size: 17px; fill: var(--text); }}
 .tag {{ font-size: 13px; fill: var(--muted); }}
-@keyframes drift {{ to {{ transform: translate(60px, 18px); }} }}
 @keyframes blink {{ 50% {{ opacity: 0; }} }}
-@media (prefers-reduced-motion: reduce) {{ .blob, .blob2, .cursor {{ animation: none; }} }}
+@media (prefers-reduced-motion: reduce) {{ .cursor {{ animation: none; }} }}
 </style>
-<defs>
-<clipPath id="hc"><rect x="0" y="0" width="{HW}" height="{HH}" rx="12"/></clipPath>
-<linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--title)"/><stop offset="1" style="stop-color:var(--num)"/></linearGradient>
-<radialGradient id="b1"><stop offset="0" style="stop-color:var(--title)" stop-opacity=".30"/><stop offset="1" style="stop-color:var(--title)" stop-opacity="0"/></radialGradient>
-<radialGradient id="b2"><stop offset="0" style="stop-color:var(--accent)" stop-opacity=".26"/><stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/></radialGradient>
-<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" style="fill:var(--grid)"/></pattern>
-</defs>
-<g clip-path="url(#hc)">
-<rect width="{HW}" height="{HH}" class="card" style="stroke:none"/>
-<rect width="{HW}" height="{HH}" fill="url(#dots)"/>
-<circle class="blob" cx="170" cy="40" r="200" fill="url(#b1)"/>
-<circle class="blob2" cx="800" cy="210" r="220" fill="url(#b2)"/>
-</g>
-<rect class="card" x=".5" y=".5" width="{HW - 1}" height="{HH - 1}" rx="12" style="fill:none"/>
+<defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--title)"/><stop offset="1" style="stop-color:var(--num)"/></linearGradient></defs>
+{_frame(HW, HH, 12)}
 <text class="tag" x="42" y="52">Hi, I'm</text>
-<text class="name leg" x="38" y="104" style="animation-delay:.1s">Emilio</text>
+<g class="grade"><text class="name leg" x="38" y="104" style="animation-delay:.1s">Emilio</text></g>
 <text class="sub leg" x="42" y="134" style="animation-delay:.4s">Computer Science student @ Fontys Venlo</text>
 <text class="tag leg" x="42" y="156" style="animation-delay:.6s">I build systems that run 24/7 and learn from their own data.</text>
 {"".join(chip_svg)}
-<rect x="570" y="38" width="380" height="154" rx="10" class="card" style="fill:var(--bg);fill-opacity:.7"/>
+<rect x="570" y="38" width="380" height="172" rx="10" class="card" style="fill:var(--bg);fill-opacity:.72"/>
 <circle cx="590" cy="56" r="4.5" fill="#f85149"/><circle cx="606" cy="56" r="4.5" fill="#f0b429"/><circle cx="622" cy="56" r="4.5" fill="#56d364"/>
 <line class="grid" x1="570" y1="72" x2="950" y2="72"/>
 {term}
@@ -414,7 +422,7 @@ def render_activity_card(data: dict, force: str | None = None) -> str:
 .c {{ transform-box: fill-box; transform-origin: center; }}
 @media (prefers-reduced-motion: reduce) {{ .c, .today {{ animation: none; }} }}
 </style>
-<rect class="card" x=".5" y=".5" width="{AW - 1}" height="{AH - 1}" rx="10"/>
+{_frame(AW, AH)}
 <text class="title" x="30" y="36">Activity · commits per day</text>
 <text class="val" x="960" y="36" text-anchor="end"><tspan style="fill:var(--num);font-size:15px">{total}</tspan> commits · <tspan style="fill:var(--num);font-size:15px">{active}</tspan> active days · <tspan style="fill:var(--num);font-size:15px">{streak}</tspan>-day streak</text>
 {"".join(months)}{days_lbl}
@@ -423,3 +431,188 @@ def render_activity_card(data: dict, force: str | None = None) -> str:
 <text class="tiny" x="{lx}" y="215">Less</text>{legend}<text class="tiny" x="{lx + 38 + 5 * 18 + 4}" y="215">More</text>
 </svg>
 """
+
+
+# ---------------------------------------------------------------------------
+# Static design assets (no data): section titles, project cards, workflow,
+# security tiles, footer, LinkedIn pill. Same look: dot grid, colour blobs,
+# slow hue "grading", staggered entrances. Pure CSS animation, no scripts.
+# ---------------------------------------------------------------------------
+import textwrap  # noqa: E402
+
+MONO = "font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;"
+_EXTRA = f"""<style>
+.h2 {{ font-size: 26px; font-weight: 800; letter-spacing: -.5px; fill: url(#tg); }}
+.sweep {{ animation: sweepx 4.5s ease-in-out infinite; }}
+@keyframes sweepx {{ from {{ transform: translateX(-300px); }} to {{ transform: translateX(1100px); }} }}
+.flow {{ stroke-dasharray: 3 9; animation: flow 1.4s linear infinite; }}
+@keyframes flow {{ to {{ stroke-dashoffset: -24; }} }}
+.travel {{ animation: travel 7s ease-in-out infinite; }}
+@keyframes travel {{ from {{ transform: translateX(0); }} to {{ transform: translateX(790px); }} }}
+.ping {{ transform-box: fill-box; transform-origin: center; animation: ping 3.2s ease-out infinite backwards; }}
+@keyframes ping {{ 0% {{ transform: scale(1); opacity: .7; }} 70%, 100% {{ transform: scale(2.2); opacity: 0; }} }}
+.pulse {{ transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-in-out infinite; }}
+@keyframes pulse {{ 50% {{ transform: scale(1.12); }} }}
+@media (prefers-reduced-motion: reduce) {{ .sweep, .flow, .travel, .ping, .pulse {{ animation: none; }} }}
+</style>
+<defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--title)"/><stop offset="1" style="stop-color:var(--num)"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--num)" stop-opacity="0"/><stop offset=".5" style="stop-color:var(--num)" stop-opacity="1"/><stop offset="1" style="stop-color:var(--num)" stop-opacity="0"/></linearGradient></defs>"""
+
+
+def _svg(w: int, h: int, body: str, label: str, force: str | None, rx: int = 10, frame: bool = True) -> str:
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{label}">'
+        f"<title>{label}</title>{_style(force)}{_EXTRA}"
+        f'{_frame(w, h, rx) if frame else ""}{body}</svg>\n'
+    )
+
+
+def render_section(title: str, sub: str, force: str | None = None) -> str:
+    body = (
+        '<g class="grade"><rect class="leg" x="22" y="16" width="6" height="34" rx="3" style="fill:url(#tg);animation-delay:.1s"/></g>'
+        f'<text class="h2 leg" x="42" y="38" style="animation-delay:.2s">{title}</text>'
+        f'<text class="tiny leg" x="42" y="56" style="animation-delay:.4s">{sub}</text>'
+        '<g clip-path="url(#sc)"><rect class="sweep" x="0" y="68" width="260" height="2" fill="url(#beam)"/></g>'
+        '<defs><clipPath id="sc"><rect x="0" y="66" width="990" height="4"/></clipPath></defs>'
+    )
+    return _svg(990, 72, body, title, force, rx=12)
+
+
+ICONS = {  # 24x24 line icons
+    "chart": '<path d="M3 17l5-6 4 3 8-10" /><path d="M3 21h18" /><circle cx="20" cy="4" r="1.6"/>',
+    "flask": '<path d="M9 3h6M10 3v6l-5.5 9.5A2 2 0 006.3 21h11.4a2 2 0 001.8-2.5L14 9V3"/><path d="M7.5 15h9"/>',
+    "film": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9l5 3-5 3z"/><path d="M3 9h2M3 15h2M19 9h2M19 15h2"/>',
+    "key": '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/>',
+    "pin": '<path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/><path d="M12 14v7"/>',
+    "shield": '<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+    "sigma": '<path d="M18 5H6l6 7-6 7h12"/>',
+}
+
+
+def _icon(name: str, x: float, y: float, size: float, col: str = "var(--title)") -> str:
+    k = size / 24
+    return (f'<g transform="translate({x} {y}) scale({k:.3f})" fill="none" stroke="{col}" '
+            f'stroke-width="{1.7:.2f}" stroke-linecap="round" stroke-linejoin="round">{ICONS[name]}</g>')
+
+
+def render_project_card(name: str, desc: str, tags: list[str], status: str, icon: str,
+                        force: str | None = None) -> str:
+    w, h = 320, 236
+    lines = textwrap.wrap(desc, 38)[:4]
+    desc_svg = "".join(
+        f'<text class="lbl leg" x="24" y="{128 + i * 18}" style="animation-delay:{0.5 + i * 0.1:.2f}s">{ln}</text>'
+        for i, ln in enumerate(lines)
+    )
+    tx, tag_svg = 24, []
+    for i, t in enumerate(tags):
+        tw = int(len(t) * 6.3 + 22)
+        tag_svg.append(
+            f'<g class="leg" style="animation-delay:{0.9 + i * 0.1:.2f}s"><rect x="{tx}" y="200" width="{tw}" height="22" rx="11" '
+            f'style="fill:var(--title);fill-opacity:.12;stroke:var(--title);stroke-opacity:.45"/>'
+            f'<text class="tiny" x="{tx + tw / 2:.0f}" y="215" text-anchor="middle" style="fill:var(--text);font-size:10.5px">{t}</text></g>'
+        )
+        tx += tw + 8
+    sw = int(len(status) * 6.4 + 24)
+    body = (
+        f'<g class="grade"><rect class="pulse" x="24" y="24" width="48" height="48" rx="13" style="fill:var(--title);fill-opacity:.14;stroke:var(--title);stroke-opacity:.5"/></g>'
+        f'{_icon(icon, 36, 36, 24)}'
+        f'<rect x="{w - 24 - sw}" y="30" width="{sw}" height="22" rx="11" style="fill:var(--num);fill-opacity:.14;stroke:var(--num);stroke-opacity:.5"/>'
+        f'<circle class="ping" cx="{w - 24 - sw + 12}" cy="41" r="3" style="fill:var(--num)"/><circle cx="{w - 24 - sw + 12}" cy="41" r="3" style="fill:var(--num)"/>'
+        f'<text class="tiny" x="{w - 24 - sw + 21}" y="45" style="fill:var(--text);font-size:10.5px">{status}</text>'
+        f'<text class="leg" x="24" y="104" style="{MONO}font-size:17px;font-weight:700;fill:var(--title);animation-delay:.3s">{name}</text>'
+        f'{desc_svg}{"".join(tag_svg)}'
+        f'<g clip-path="url(#cb)"><rect class="sweep" x="0" y="{h - 3}" width="200" height="3" fill="url(#beam)"/></g>'
+        f'<defs><clipPath id="cb"><rect x="0" y="{h - 4}" width="{w}" height="4"/></clipPath></defs>'
+    )
+    return _svg(w, h, body, f"Project {name}: {desc}", force)
+
+
+STEPS = [
+    ("Spec first", "write it down before code"),
+    ("Staged delivery", "small, shippable slices"),
+    ("Tests as gate", "tests + benchmarks must pass"),
+    ("Deploy over SSH", "auto-rollback on failure"),
+    ("Observable", "everything reports to my phone"),
+]
+
+
+def render_workflow(force: str | None = None) -> str:
+    w, h, y = 990, 150, 58
+    xs = [100 + i * 197.5 for i in range(5)]
+    nodes = []
+    for i, (t, s_) in enumerate(STEPS):
+        x = xs[i]
+        nodes.append(
+            f'<g class="leg" style="animation-delay:{0.2 + i * 0.15:.2f}s">'
+            f'<circle class="ping" cx="{x}" cy="{y}" r="15" style="fill:none;stroke:var(--title);animation-delay:{i * 1.2:.1f}s"/>'
+            f'<circle cx="{x}" cy="{y}" r="15" style="fill:var(--bg);stroke:var(--title);stroke-width:1.6"/>'
+            f'<text x="{x}" y="{y + 5}" text-anchor="middle" style="{MONO}font-size:13px;font-weight:700;fill:var(--num)">{i + 1}</text>'
+            f'<text class="val" x="{x}" y="{y + 44}" text-anchor="middle" style="font-size:14px">{t}</text>'
+            f'<text class="tiny" x="{x}" y="{y + 62}" text-anchor="middle">{s_}</text></g>'
+        )
+    body = (
+        f'<line class="flow" x1="{xs[0]}" y1="{y}" x2="{xs[-1]}" y2="{y}" style="stroke:var(--muted);stroke-width:2;stroke-linecap:round;opacity:.6"/>'
+        f'<g class="grade"><circle class="travel" cx="{xs[0]}" cy="{y}" r="5" style="fill:var(--num)"/>'
+        f'<circle class="travel" cx="{xs[0]}" cy="{y}" r="11" style="fill:var(--num);fill-opacity:.25"/></g>'
+        + "".join(nodes)
+    )
+    return _svg(w, h, body, "How I work: spec first, staged delivery, tests as gate, deploy over SSH with auto-rollback, observable", force)
+
+
+TILES = [
+    ("key", "Least privilege", "scoped, read-only tokens"),
+    ("pin", "Pinned CI", "actions locked to hashes"),
+    ("shield", "No secrets in code", "env & secret stores only"),
+    ("sigma", "Sums only", "only aggregates are public"),
+]
+
+
+def render_security(force: str | None = None) -> str:
+    w, h = 990, 150
+    tw, gap = 228, 12
+    tiles = []
+    for i, (ic, t, s_) in enumerate(TILES):
+        x = 24 + i * (tw + gap)
+        tiles.append(
+            f'<g class="leg" style="animation-delay:{0.2 + i * 0.15:.2f}s">'
+            f'<rect x="{x}" y="22" width="{tw}" height="106" rx="12" style="fill:var(--bg);fill-opacity:.72;stroke:var(--border)"/>'
+            f'<g class="grade"><circle class="pulse" cx="{x + 38}" cy="62" r="20" style="fill:var(--num);fill-opacity:.14;stroke:var(--num);stroke-opacity:.5;animation-delay:{i * .5:.1f}s"/></g>'
+            f'{_icon(ic, x + 26, 50, 24, "var(--num)")}'
+            f'<text class="val" x="{x + 70}" y="58" style="font-size:14px">{t}</text>'
+            f'<text class="tiny" x="{x + 70}" y="76">{s_}</text>'
+            f'<line class="grid" x1="{x + 18}" y1="98" x2="{x + tw - 18}" y2="98"/>'
+            f'<rect x="{x + 18}" y="104" width="{tw - 36}" height="3" rx="1.5" style="fill:var(--num);fill-opacity:.35"/></g>'
+        )
+    return _svg(w, h, "".join(tiles), "Security mindset: least privilege, pinned CI, no secrets in code, only sums published", force)
+
+
+def render_footer(force: str | None = None) -> str:
+    w, h = 990, 96
+    body = (
+        '<g class="grade"><circle class="ping" cx="495" cy="30" r="5" style="fill:var(--num)"/><circle cx="495" cy="30" r="5" style="fill:var(--num)"/></g>'
+        '<text class="val leg" x="495" y="60" text-anchor="middle" style="font-size:15px;animation-delay:.3s">Private by default – if you want to know more, get in touch.</text>'
+        '<text class="tiny leg" x="495" y="80" text-anchor="middle" style="animation-delay:.6s">stats update themselves · Python + GitHub Actions · only sums are published</text>'
+    )
+    return _svg(w, h, body, "Private by default – if you want to know more, get in touch.", force, rx=12)
+
+
+def render_linkedin(force: str | None = None) -> str:
+    w, h = 230, 46
+    body = (
+        '<defs><clipPath id="lp"><rect x="1" y="1" width="228" height="44" rx="22"/></clipPath></defs>'
+        '<rect x="1" y="1" width="228" height="44" rx="22" class="card" style="stroke:none"/>'
+        '<rect x="1" y="1" width="228" height="44" rx="22" style="fill:var(--title);fill-opacity:.12;stroke:var(--title);stroke-opacity:.6"/>'
+        '<g clip-path="url(#lp)"><rect class="sweep" x="0" y="0" width="90" height="46" fill="url(#beam)" fill-opacity=".35"/></g>'
+        '<text class="val" x="115" y="28" text-anchor="middle" style="font-size:14px;fill:var(--title)">Connect on LinkedIn  ↗</text>'
+    )
+    return _svg(w, h, body, "Connect on LinkedIn", force, rx=22, frame=False)
+
+
+PROJECTS = [
+    ("signal-scanner", "24/7 scanner that scores live market data from 0 to 100 and alerts in real time. "
+     "Strategy variants compete in paper trading.", ["24/7", "scoring", "paper trading"], "paper mode", "chart"),
+    ("strategy-research-lab", "Cost-aware idea finder: 100 competing strategy variants, a dashboard and a "
+     "strict paper-first release gate.", ["748 tests", "100 variants"], "in development", "flask"),
+    ("explainer-video-pipeline", "Automated pipeline for short vertical videos: React scenes, local speech "
+     "synthesis and recognition, procedural music.", ["zero cloud cost", "local TTS"], "first reel shipped", "film"),
+]
