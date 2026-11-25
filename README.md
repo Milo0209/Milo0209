@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/header.svg" width="100%" alt="Emilio – Computer Science student. Data Science, AI, Cyber Security." />
+  <img src="assets/header.svg" width="100%" alt="Emilio – Informatics student. Data Science, AI, Cyber Security." />
 </p>
 
 <p align="center">

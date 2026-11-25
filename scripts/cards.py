@@ -330,8 +330,8 @@ def render_header_card(force: str | None = None) -> str:
         f'<text class="leg" x="600" y="{96 + i * 24}" style="{mono}font-size:13px;fill:var(--text);animation-delay:{d}s">{t}</text>'
         for i, (d, t) in enumerate(lines)
     )
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{HW}" height="{HH}" viewBox="0 0 {HW} {HH}" role="img" aria-label="Emilio – Computer Science student. Data Science, AI, Cyber Security.">
-<title>Emilio – Computer Science student</title>
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{HW}" height="{HH}" viewBox="0 0 {HW} {HH}" role="img" aria-label="Emilio – Informatics student. Data Science, AI, Cyber Security.">
+<title>Emilio – Informatics student</title>
 {_style(force)}
 <style>
 .cursor {{ animation: blink 1s steps(1) infinite; }}
@@ -345,7 +345,7 @@ def render_header_card(force: str | None = None) -> str:
 {_frame(HW, HH, 12)}
 <text class="tag" x="42" y="52">Hi, I'm</text>
 <g class="grade"><text class="name leg" x="38" y="104" style="animation-delay:.1s">Emilio</text></g>
-<text class="sub leg" x="42" y="134" style="animation-delay:.4s">Computer Science student @ Fontys Venlo</text>
+<text class="sub leg" x="42" y="134" style="animation-delay:.4s">Informatics student @ Fontys Venlo</text>
 <text class="tag leg" x="42" y="156" style="animation-delay:.6s">I build systems that run 24/7 and learn from their own data.</text>
 {"".join(chip_svg)}
 <rect x="570" y="38" width="380" height="172" rx="10" class="card" style="fill:var(--bg);fill-opacity:.72"/>
