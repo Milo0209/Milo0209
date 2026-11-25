@@ -18,7 +18,7 @@
 <p align="center"><img src="assets/workflow.svg" width="100%" alt="Spec first, staged delivery, tests as gate, deploy over SSH with auto-rollback, observable" /></p>
 
 <p align="center"><img src="assets/sec-security.svg" width="100%" alt="Security mindset" /></p>
-<p align="center"><img src="assets/security.svg" width="100%" alt="Least privilege, pinned CI, no secrets in code, only sums published" /></p>
+<p align="center"><img src="assets/security-tiles.svg" width="100%" alt="Least privilege, pinned CI, no secrets in code, only sums published" /></p>
 
 <p align="center"><img src="assets/sec-stats.svg" width="100%" alt="Live stats" /></p>
 
