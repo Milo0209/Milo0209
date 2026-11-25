@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="495" height="210" viewBox="0 0 495 210" role="img" aria-label="Lines of code: 147.0K added, 2.9K deleted">
+<title>Lines of code across my repositories</title>
+<style>
+:root {
+  --bg:#f6f8fa; --border:#d0d7de; --title:#3b6fd4; --num:#0f8f7f; --text:#57606a;
+  --muted:#8c959f; --accent:#8250df; --line:#3b6fd4; --grid:#d8dee4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#1a1b27; --border:#2a2d42; --title:#70a5fd; --num:#38bdae; --text:#a9b1d6;
+    --muted:#6b7394; --accent:#bf91f3; --line:#70a5fd; --grid:#2a2d42;
+  }
+}
+
+text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+.card { fill: var(--bg); stroke: var(--border); stroke-width: 1; }
+.title { font-size: 15px; font-weight: 600; fill: var(--title); }
+.big { font-size: 36px; font-weight: 700; fill: var(--num); }
+.lbl { font-size: 12px; fill: var(--text); }
+.val { font-size: 12px; font-weight: 600; fill: var(--text); }
+.tiny { font-size: 10px; fill: var(--muted); }
+.spark { fill: none; stroke: var(--line); stroke-width: 2; stroke-linejoin: round;
+         stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000;
+         animation: draw 1.6s ease-out forwards; }
+.area { fill: url(#g); opacity: 0; animation: fade 1.2s ease-out .5s forwards; }
+.dot { fill: var(--accent); opacity: 0; animation: fade .4s ease-out 1.6s forwards; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .spark { animation: none; stroke-dashoffset: 0; }
+  .area, .dot { animation: none; opacity: 1; }
+}
+</style>
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="var(--line)" stop-opacity=".28"/><stop offset="1" stop-color="var(--line)" stop-opacity="0"/>
+</linearGradient></defs>
+<rect class="card" x=".5" y=".5" width="494" height="209" rx="10"/>
+<text class="title" x="25" y="33">Lines of Code · all repositories</text>
+<text class="big" x="25" y="82">+147.0K</text>
+<text class="lbl" x="25" y="102">lines added</text>
+<text class="big" x="200" y="82" style="fill:var(--accent)">−2.9K</text>
+<text class="lbl" x="200" y="102">lines deleted</text>
+<text class="val" x="470" y="62" text-anchor="end">+144.1K</text>
+<text class="tiny" x="470" y="78" text-anchor="end">net</text>
+<line class="grid" x1="25" y1="176" x2="470" y2="176"/>
+<path class="area" d="M25.0,175.6 L42.8,175.6 L60.6,175.6 L78.4,175.6 L96.2,175.6 L114.0,175.6 L131.8,175.6 L149.6,175.6 L167.4,175.6 L185.2,175.6 L203.0,175.6 L220.8,175.6 L238.6,175.6 L256.4,175.6 L274.2,175.6 L292.0,175.6 L309.8,175.6 L327.6,175.6 L345.4,175.6 L363.2,175.6 L381.0,166.6 L398.8,162.0 L416.6,161.4 L434.4,154.9 L452.2,147.3 L470.0,128.0 L470,176 L25,176 Z"/>
+<path class="spark" d="M25.0,175.6 L42.8,175.6 L60.6,175.6 L78.4,175.6 L96.2,175.6 L114.0,175.6 L131.8,175.6 L149.6,175.6 L167.4,175.6 L185.2,175.6 L203.0,175.6 L220.8,175.6 L238.6,175.6 L256.4,175.6 L274.2,175.6 L292.0,175.6 L309.8,175.6 L327.6,175.6 L345.4,175.6 L363.2,175.6 L381.0,166.6 L398.8,162.0 L416.6,161.4 L434.4,154.9 L452.2,147.3 L470.0,128.0"/>
+<path class="spark" d="M25.0,176.0 L42.8,176.0 L60.6,176.0 L78.4,176.0 L96.2,176.0 L114.0,176.0 L131.8,176.0 L149.6,176.0 L167.4,176.0 L185.2,176.0 L203.0,176.0 L220.8,176.0 L238.6,176.0 L256.4,176.0 L274.2,176.0 L292.0,176.0 L309.8,176.0 L327.6,176.0 L345.4,176.0 L363.2,176.0 L381.0,175.9 L398.8,175.7 L416.6,175.7 L434.4,175.5 L452.2,175.3 L470.0,175.1" style="stroke:var(--accent);animation-delay:.3s"/>
+<circle class="dot" cx="470.0" cy="128.0" r="3.5"/>
+<text class="tiny" x="25" y="196">cumulative, last 26 weeks · 8 repos · 117 commits</text>
+<text class="tiny" x="470" y="196" text-anchor="end">2026-11-25</text>
+</svg>
