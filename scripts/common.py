@@ -14,6 +14,7 @@ from pathlib import Path
 
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MACHINE_RE = re.compile(r"^[a-z0-9]{1,8}$")
+LANG_RE = re.compile(r"^[A-Za-z+#]{1,12}$")
 FIELDS = ("input", "output", "cache_read", "cache_creation")
 MAX_INT = 10**13  # sanity cap, far above any realistic token count
 
@@ -62,8 +63,16 @@ def validate_tokens(data: dict) -> dict:
 
 def validate_loc(data: dict) -> dict:
     """Allow-list validation of data/loc.json (sums only, no repo names)."""
-    if set(data) != {"schema", "updated", "since", "repos", "commits", "total", "weekly"}:
+    base = {"schema", "updated", "since", "repos", "commits", "total", "weekly"}
+    if set(data) - {"languages"} != base:
         raise ValidationError("unexpected top-level keys")
+    langs = data.get("languages", {})
+    if not isinstance(langs, dict) or len(langs) > 40:
+        raise ValidationError("languages")
+    for name, n in langs.items():
+        if not LANG_RE.match(name):
+            raise ValidationError("language name")
+        _int(n, "language lines")
     if data["schema"] != 1:
         raise ValidationError("schema")
     for k in ("updated", "since"):

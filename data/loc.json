@@ -1,11 +1,20 @@
 {
-  "commits": 139,
+  "commits": 142,
+  "languages": {
+    "CSS": 885,
+    "HTML": 1178,
+    "JavaScript": 3878,
+    "Python": 28847,
+    "SQL": 278,
+    "Shell": 1819,
+    "TypeScript": 37523
+  },
   "repos": 11,
   "schema": 1,
   "since": "2025-09-01",
   "total": {
-    "added": 153152,
-    "deleted": 3187
+    "added": 153195,
+    "deleted": 3222
   },
   "updated": "2026-11-25",
   "weekly": {
@@ -34,8 +43,8 @@
       472
     ],
     "2026-11-23": [
-      65152,
-      1062
+      65195,
+      1097
     ]
   }
 }

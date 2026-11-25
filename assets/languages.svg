@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="990" height="205" viewBox="0 0 990 205" role="img" aria-label="Most used language: TypeScript with 50% of lines written">
+<title>Programming languages by lines written</title>
+<style>
+:root {
+  --bg:#f6f8fa; --border:#d0d7de; --title:#3b6fd4; --num:#0f8f7f; --text:#57606a;
+  --muted:#8c959f; --accent:#8250df; --line:#3b6fd4; --grid:#d8dee4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#1a1b27; --border:#2a2d42; --title:#70a5fd; --num:#38bdae; --text:#a9b1d6;
+    --muted:#6b7394; --accent:#bf91f3; --line:#70a5fd; --grid:#2a2d42;
+  }
+}
+
+text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+.card { fill: var(--bg); stroke: var(--border); stroke-width: 1; }
+.title { font-size: 15px; font-weight: 600; fill: var(--title); }
+.big { font-size: 36px; font-weight: 700; fill: var(--num); }
+.lbl { font-size: 12px; fill: var(--text); }
+.val { font-size: 12px; font-weight: 600; fill: var(--text); }
+.tiny { font-size: 10px; fill: var(--muted); }
+.spark { fill: none; stroke: var(--line); stroke-width: 2; stroke-linejoin: round;
+         stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000;
+         animation: draw 1.6s ease-out forwards; }
+.area { fill: url(#g); opacity: 0; animation: fade 1.2s ease-out .5s forwards; }
+.dot { fill: var(--accent); opacity: 0; animation: fade .4s ease-out 1.6s forwards; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+.seg { transform-box: fill-box; transform-origin: 0 50%;
+       animation: grow .9s cubic-bezier(.2,.8,.2,1) backwards; }
+.leg { animation: rise .6s ease-out backwards; }
+.shine { fill: url(#sh); transform-box: fill-box; animation: sweep 1.5s ease-in-out 1.5s backwards; }
+@keyframes sweep { from { transform: translateX(0); } to { transform: translateX(1100px); } }
+@keyframes grow { from { transform: scaleX(0); } }
+@keyframes rise { from { opacity: 0; transform: translateY(5px); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .spark { animation: none; stroke-dashoffset: 0; }
+  .area, .dot { animation: none; opacity: 1; }
+  .seg, .leg, .shine { animation: none; }
+}
+</style>
+<rect class="card" x=".5" y=".5" width="989" height="204" rx="10"/>
+<text class="title" x="30" y="36">Languages · by lines written</text>
+<text class="tiny" x="960" y="36" text-anchor="end">7 languages · 74.4K lines</text>
+<text class="big" x="30" y="86" style="fill:#3b82f6">50%</text>
+<text class="lbl" x="114" y="86" style="font-size:15px">of my code is <tspan class="val" style="font-size:15px">TypeScript</tspan></text>
+<defs>
+<clipPath id="bar"><rect x="30" y="112" width="930" height="14" rx="7"/></clipPath>
+<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<g clip-path="url(#bar)"><rect class="seg" x="30.0" y="112" width="462.9" height="14" fill="#3b82f6" style="animation-delay:0.00s"/><rect class="seg" x="494.9" y="112" width="355.9" height="14" fill="#ffd43b" style="animation-delay:0.12s"/><rect class="seg" x="852.8" y="112" width="47.8" height="14" fill="#f0883e" style="animation-delay:0.24s"/><rect class="seg" x="902.7" y="112" width="22.4" height="14" fill="#56d364" style="animation-delay:0.36s"/><rect class="seg" x="927.1" y="112" width="14.5" height="14" fill="#f85149" style="animation-delay:0.48s"/><rect class="seg" x="943.7" y="112" width="10.9" height="14" fill="#a371f7" style="animation-delay:0.60s"/><rect class="seg" x="956.6" y="112" width="4.0" height="14" fill="#6e7681" style="animation-delay:0.72s"/><rect class="shine" x="-140" y="112" width="120" height="14"/></g>
+<g class="leg" style="animation-delay:0.50s"><circle cx="35.0" cy="153" r="5" fill="#3b82f6"/><text class="lbl" x="47.0" y="157">TypeScript</text><text class="val" x="47.0" y="176" style="font-size:15px">50%</text></g><g class="leg" style="animation-delay:0.60s"><circle cx="167.9" cy="153" r="5" fill="#ffd43b"/><text class="lbl" x="179.9" y="157">Python</text><text class="val" x="179.9" y="176" style="font-size:15px">39%</text></g><g class="leg" style="animation-delay:0.70s"><circle cx="300.7" cy="153" r="5" fill="#f0883e"/><text class="lbl" x="312.7" y="157">JavaScript</text><text class="val" x="312.7" y="176" style="font-size:15px">5.2%</text></g><g class="leg" style="animation-delay:0.80s"><circle cx="433.6" cy="153" r="5" fill="#56d364"/><text class="lbl" x="445.6" y="157">Shell</text><text class="val" x="445.6" y="176" style="font-size:15px">2.4%</text></g><g class="leg" style="animation-delay:0.90s"><circle cx="566.4" cy="153" r="5" fill="#f85149"/><text class="lbl" x="578.4" y="157">HTML</text><text class="val" x="578.4" y="176" style="font-size:15px">1.6%</text></g><g class="leg" style="animation-delay:1.00s"><circle cx="699.3" cy="153" r="5" fill="#a371f7"/><text class="lbl" x="711.3" y="157">CSS</text><text class="val" x="711.3" y="176" style="font-size:15px">1.2%</text></g><g class="leg" style="animation-delay:1.10s"><circle cx="832.1" cy="153" r="5" fill="#6e7681"/><text class="lbl" x="844.1" y="157">Other</text><text class="val" x="844.1" y="176" style="font-size:15px">0.4%</text></g>
+<text class="tiny" x="30" y="197">lines added per language · forks &amp; dependencies excluded</text>
+<text class="tiny" x="960" y="197" text-anchor="end">2026-11-25</text>
+</svg>
