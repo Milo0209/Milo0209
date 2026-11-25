@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+import xml.etree.ElementTree as ET
 import re
 import sys
 from pathlib import Path
@@ -38,6 +39,16 @@ def main() -> int:
     deny = [d.strip().lower() for d in os.environ.get("STATS_DENYLIST", "").split(",") if d.strip()]
     for p in list((ROOT / "assets").glob("*.svg")) + list((ROOT / "data").glob("*.json")):
         text = p.read_text()
+        if p.suffix == ".svg":
+            if "<!ENTITY" in text or "<!DOCTYPE" in text:
+                print(f"FAIL: {p.relative_to(ROOT)} contains a DOCTYPE/ENTITY")
+                ok = False
+            else:
+                try:
+                    ET.fromstring(text)
+                except ET.ParseError:
+                    print(f"FAIL: {p.relative_to(ROOT)} is not well-formed XML")
+                    ok = False
         if p.suffix == ".svg" and BAD_SVG.search(text):
             print(f"FAIL: {p.relative_to(ROOT)} contains non-static SVG content")
             ok = False

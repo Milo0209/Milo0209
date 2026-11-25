@@ -562,7 +562,7 @@ def render_workflow(force: str | None = None) -> str:
 TILES = [
     ("key", "Least privilege", "scoped, read-only tokens"),
     ("pin", "Pinned CI", "actions locked to hashes"),
-    ("shield", "No secrets in code", "env & secret stores only"),
+    ("shield", "No secrets in code", "env and secret stores only"),
     ("sigma", "Sums only", "only aggregates are public"),
 ]
 
