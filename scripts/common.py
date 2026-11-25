@@ -64,11 +64,18 @@ def validate_tokens(data: dict) -> dict:
 def validate_loc(data: dict) -> dict:
     """Allow-list validation of data/loc.json (sums only, no repo names)."""
     base = {"schema", "updated", "since", "repos", "commits", "total", "weekly"}
-    if set(data) - {"languages"} != base:
+    if set(data) - {"languages", "activity"} != base:
         raise ValidationError("unexpected top-level keys")
     langs = data.get("languages", {})
     if not isinstance(langs, dict) or len(langs) > 40:
         raise ValidationError("languages")
+    act = data.get("activity", {})
+    if not isinstance(act, dict) or len(act) > 800:
+        raise ValidationError("activity")
+    for day, n in act.items():
+        if not DATE_RE.match(day):
+            raise ValidationError("activity day")
+        _int(n, "activity count")
     for name, n in langs.items():
         if not LANG_RE.match(name):
             raise ValidationError("language name")

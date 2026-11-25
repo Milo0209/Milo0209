@@ -347,3 +347,79 @@ def render_header_card(force: str | None = None) -> str:
 <text class="cursor" x="600" y="192" style="{mono}font-size:13px;fill:var(--num)">▌</text>
 </svg>
 """
+
+
+AW, AH = 990, 235
+
+
+def render_activity_card(data: dict, force: str | None = None) -> str:
+    """Commit heatmap, last 53 weeks (Mon-Sun rows). data must be validated."""
+    act = data.get("activity", {})
+    end = date.fromisoformat(data["updated"])
+    first = min((date.fromisoformat(k) for k in act), default=end)
+    nweeks = max(36, min(53, (end - first).days // 7 + 5))  # grows with history, 36..53 weeks
+    start = end - timedelta(days=end.weekday()) - timedelta(weeks=nweeks - 1)
+    win = [(start + timedelta(days=i)) for i in range((end - start).days + 1)]
+    counts = {d: act.get(d.isoformat(), 0) for d in win}
+    total, active, best = sum(counts.values()), sum(1 for v in counts.values() if v), max(counts.values() or [0])
+    streak, d = 0, end
+    if counts.get(d, 0) == 0:
+        d -= timedelta(days=1)  # today may still be empty
+    while counts.get(d, 0) > 0:
+        streak += 1
+        d -= timedelta(days=1)
+
+    pitch = min(19, 880 // nweeks)
+    cell = pitch - 3
+    x0, y0 = (AW - nweeks * pitch) // 2 + 20, 62
+
+    def level(n: int) -> int:
+        if n <= 0:
+            return 0
+        return min(4, 1 + int(3 * (n / max(best, 1)) ** 0.5))  # sqrt scale: 1 commit stays visible
+
+    cells, months, last_m = [], [], None
+    for d in win:
+        col, row = (d - start).days // 7, d.weekday()
+        x, y = x0 + col * pitch, y0 + row * pitch
+        lv = level(counts[d])
+        delay = f"{col * 0.018 + row * 0.01:.3f}"
+        extra = ' stroke="var(--accent)" stroke-width="1.6" class="c today"' if d == end else ' class="c"'
+        cells.append(
+            f'<rect{extra} x="{x}" y="{y}" width="{cell}" height="{cell}" rx="3" '
+            f'fill="{"var(--grid)" if lv == 0 else "var(--num)"}" fill-opacity="{[0.7, 0.28, 0.5, 0.75, 1][lv]}" '
+            f'style="animation-delay:{delay}s"/>'
+        )
+        if row == 0 and d.day <= 7 and (d.year, d.month) != last_m:
+            months.append(f'<text class="tiny" x="{x}" y="{y0 - 8}">{d.strftime("%b")}</text>')
+            last_m = (d.year, d.month)
+    days_lbl = "".join(
+        f'<text class="tiny" x="{x0 - 34}" y="{y0 + i * pitch + cell - 2}">{n}</text>'
+        for i, n in ((0, "Mon"), (2, "Wed"), (4, "Fri"))
+    )
+    lx = 735
+    legend = "".join(
+        f'<rect x="{lx + 38 + i * 18}" y="205" width="13" height="13" rx="3" '
+        f'fill="{"var(--grid)" if i == 0 else "var(--num)"}" fill-opacity="{[0.7, 0.28, 0.5, 0.75, 1][i]}"/>'
+        for i in range(5)
+    )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{AW}" height="{AH}" viewBox="0 0 {AW} {AH}" role="img" aria-label="Commit activity: {total} commits in the last {nweeks} weeks, {active} active days">
+<title>Commit activity</title>
+{_style(force)}
+<style>
+.c {{ animation: pop .5s ease-out backwards; }}
+.today {{ animation: pop .5s ease-out backwards, ring 2.4s ease-in-out 1.4s infinite; }}
+@keyframes pop {{ from {{ opacity: 0; transform: scale(.4); }} }}
+@keyframes ring {{ 50% {{ stroke-opacity: .25; }} }}
+.c {{ transform-box: fill-box; transform-origin: center; }}
+@media (prefers-reduced-motion: reduce) {{ .c, .today {{ animation: none; }} }}
+</style>
+<rect class="card" x=".5" y=".5" width="{AW - 1}" height="{AH - 1}" rx="10"/>
+<text class="title" x="30" y="36">Activity · commits per day</text>
+<text class="val" x="960" y="36" text-anchor="end"><tspan style="fill:var(--num);font-size:15px">{total}</tspan> commits · <tspan style="fill:var(--num);font-size:15px">{active}</tspan> active days · <tspan style="fill:var(--num);font-size:15px">{streak}</tspan>-day streak</text>
+{"".join(months)}{days_lbl}
+{"".join(cells)}
+<text class="tiny" x="30" y="215">last {nweeks} weeks · private repositories included, names never shown · updated {data['updated']}</text>
+<text class="tiny" x="{lx}" y="215">Less</text>{legend}<text class="tiny" x="{lx + 38 + 5 * 18 + 4}" y="215">More</text>
+</svg>
+"""

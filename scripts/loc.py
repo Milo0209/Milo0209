@@ -36,7 +36,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from cards import render_languages_card, render_loc_card  # noqa: E402
+from cards import render_activity_card, render_languages_card, render_loc_card  # noqa: E402
 from common import atomic_write, dump_json, validate_loc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -161,7 +161,7 @@ def count_repo(full: str, token: str, since: str, cfg: dict, tmp: Path,
     finally:
         shutil.rmtree(dest, ignore_errors=True)
 
-    commits, weekly, langs = 0, {}, {}
+    commits, weekly, langs, days = 0, {}, {}, {}
     ext_map = cfg.get("languages", {})
     mine, wk = False, ""
     for raw in proc.stdout.decode("utf-8", errors="ignore").splitlines():
@@ -172,6 +172,7 @@ def count_repo(full: str, token: str, since: str, cfg: dict, tmp: Path,
             wk = monday(day)
             if mine:
                 commits += 1
+                days[day] = days.get(day, 0) + 1
             continue
         if not mine or not raw:
             continue
@@ -191,7 +192,7 @@ def count_repo(full: str, token: str, since: str, cfg: dict, tmp: Path,
         lang = ext_map.get(ext)
         if lang:
             langs[lang] = langs.get(lang, 0) + a
-    return commits, weekly, langs
+    return commits, weekly, langs, days
 
 
 def main() -> int:
@@ -217,16 +218,18 @@ def main() -> int:
 
     try:
         repos = list_repos(token, cfg)
-        total_commits, weekly, languages = 0, {}, {}
+        total_commits, weekly, languages, activity = 0, {}, {}, {}
         for i, full in enumerate(repos, 1):
             tmp = Path(tempfile.mkdtemp(prefix="loc-"))
             try:
-                c, w, lg = count_repo(full, token, since, cfg, tmp, emails, noreply, cap)
+                c, w, lg, dy = count_repo(full, token, since, cfg, tmp, emails, noreply, cap)
             finally:
                 shutil.rmtree(tmp, ignore_errors=True)
             total_commits += c
             for k, v in lg.items():
                 languages[k] = languages.get(k, 0) + v
+            for k, v in dy.items():
+                activity[k] = activity.get(k, 0) + v
             for wk, (x, y) in w.items():
                 acc = weekly.setdefault(wk, [0, 0])
                 acc[0] += x
@@ -247,6 +250,7 @@ def main() -> int:
         "total": {"added": added, "deleted": deleted},
         "weekly": dict(sorted(weekly.items())),
         "languages": dict(sorted(languages.items(), key=lambda kv: -kv[1])),
+        "activity": dict(sorted(activity.items())[-400:]),
     })
     print(f"total: repos={len(repos)} commits={total_commits} added={added} deleted={deleted}")
     if a.no_write:
@@ -262,6 +266,7 @@ def main() -> int:
     atomic_write(p, dump_json(out))
     atomic_write(Path(a.svg_dir) / "loc.svg", render_loc_card(out))
     atomic_write(Path(a.svg_dir) / "languages.svg", render_languages_card(out))
+    atomic_write(Path(a.svg_dir) / "activity.svg", render_activity_card(out))
     return 0
 
 

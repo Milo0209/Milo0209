@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="495" height="210" viewBox="0 0 495 210" role="img" aria-label="Lines of code: 153.4K added">
+<svg xmlns="http://www.w3.org/2000/svg" width="495" height="210" viewBox="0 0 495 210" role="img" aria-label="Lines of code: 153.5K added">
 <title>Lines of code across my repositories</title>
 <style>
 :root {
@@ -45,9 +45,9 @@ text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
 </linearGradient></defs>
 <rect class="card" x=".5" y=".5" width="494" height="209" rx="10"/>
 <text class="title" x="25" y="33">Lines of Code · all repositories</text>
-<text class="big" x="25" y="82">+153.4K</text>
+<text class="big" x="25" y="82">+153.5K</text>
 <text class="lbl" x="25" y="102">lines added</text>
-<text class="lbl" x="300" y="66">Repositories</text><text class="val" x="470" y="66" text-anchor="end">11</text><text class="lbl" x="300" y="83">Commits</text><text class="val" x="470" y="83" text-anchor="end">144</text><text class="lbl" x="300" y="100">Since</text><text class="val" x="470" y="100" text-anchor="end">2025-09</text>
+<text class="lbl" x="300" y="66">Repositories</text><text class="val" x="470" y="66" text-anchor="end">11</text><text class="lbl" x="300" y="83">Commits</text><text class="val" x="470" y="83" text-anchor="end">146</text><text class="lbl" x="300" y="100">Since</text><text class="val" x="470" y="100" text-anchor="end">2025-09</text>
 <line class="grid" x1="25" y1="176" x2="470" y2="176"/>
 <path class="area" d="M25.0,175.6 L42.8,175.6 L60.6,175.6 L78.4,175.6 L96.2,175.6 L114.0,175.6 L131.8,175.6 L149.6,175.6 L167.4,175.6 L185.2,175.6 L203.0,175.6 L220.8,175.6 L238.6,175.6 L256.4,175.6 L274.2,175.6 L292.0,175.6 L309.8,175.6 L327.6,175.6 L345.4,175.6 L363.2,175.6 L381.0,167.0 L398.8,162.6 L416.6,162.1 L434.4,155.8 L452.2,148.5 L470.0,128.0 L470,176 L25,176 Z"/>
 <path class="spark" d="M25.0,175.6 L42.8,175.6 L60.6,175.6 L78.4,175.6 L96.2,175.6 L114.0,175.6 L131.8,175.6 L149.6,175.6 L167.4,175.6 L185.2,175.6 L203.0,175.6 L220.8,175.6 L238.6,175.6 L256.4,175.6 L274.2,175.6 L292.0,175.6 L309.8,175.6 L327.6,175.6 L345.4,175.6 L363.2,175.6 L381.0,167.0 L398.8,162.6 L416.6,162.1 L434.4,155.8 L452.2,148.5 L470.0,128.0"/>
