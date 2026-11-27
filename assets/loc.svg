@@ -52,11 +52,11 @@ text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
 <text class="title" x="25" y="33">Lines of Code · all repositories</text>
 <text class="big" x="25" y="82">+166.8K</text>
 <text class="lbl" x="25" y="102">lines added</text>
-<text class="lbl" x="300" y="66">Repositories</text><text class="val" x="470" y="66" text-anchor="end">11</text><text class="lbl" x="300" y="83">Commits</text><text class="val" x="470" y="83" text-anchor="end">173</text><text class="lbl" x="300" y="100">Since</text><text class="val" x="470" y="100" text-anchor="end">2025-09</text>
+<text class="lbl" x="300" y="66">Repositories</text><text class="val" x="470" y="66" text-anchor="end">11</text><text class="lbl" x="300" y="83">Commits</text><text class="val" x="470" y="83" text-anchor="end">175</text><text class="lbl" x="300" y="100">Since</text><text class="val" x="470" y="100" text-anchor="end">2025-09</text>
 <line class="grid" x1="25" y1="176" x2="470" y2="176"/>
 <path class="area" d="M25.0,175.7 L42.8,175.7 L60.6,175.7 L78.4,175.7 L96.2,175.7 L114.0,175.7 L131.8,175.7 L149.6,175.7 L167.4,175.7 L185.2,175.7 L203.0,175.7 L220.8,175.7 L238.6,175.7 L256.4,175.7 L274.2,175.7 L292.0,175.7 L309.8,175.7 L327.6,175.7 L345.4,175.7 L363.2,175.7 L381.0,167.7 L398.8,163.7 L416.6,163.2 L434.4,157.4 L452.2,150.7 L470.0,128.0 L470,176 L25,176 Z"/>
 <path class="spark" d="M25.0,175.7 L42.8,175.7 L60.6,175.7 L78.4,175.7 L96.2,175.7 L114.0,175.7 L131.8,175.7 L149.6,175.7 L167.4,175.7 L185.2,175.7 L203.0,175.7 L220.8,175.7 L238.6,175.7 L256.4,175.7 L274.2,175.7 L292.0,175.7 L309.8,175.7 L327.6,175.7 L345.4,175.7 L363.2,175.7 L381.0,167.7 L398.8,163.7 L416.6,163.2 L434.4,157.4 L452.2,150.7 L470.0,128.0"/>
 <circle class="dot" cx="470.0" cy="128.0" r="3.5"/>
 <text class="tiny" x="25" y="196">cumulative lines added · last 26 weeks · forks &amp; dependencies excluded</text>
-<text class="tiny" x="470" y="196" text-anchor="end">2026-11-26</text>
+<text class="tiny" x="470" y="196" text-anchor="end">2026-11-27</text>
 </svg>
